@@ -96,7 +96,33 @@ app.post('/api/icecekler', (req, res) => {
     });
 });
 
+// ... Mevcut app.post('/api/icecekler', ...) kodundan sonra ...
+
+// --- KİŞİ SİLME API'SI (YENİ) ---
+app.delete('/api/kisiler/:id', (req, res) => {
+    db.run(`DELETE FROM kisiler WHERE id = ?`, req.params.id, function(err) {
+        if (err) {
+            res.status(400).json({ "error": res.message });
+            return;
+        }
+        res.json({ message: "deleted", changes: this.changes });
+    });
+});
+
+// --- İÇECEK SİLME API'SI (YENİ) ---
+app.delete('/api/icecekler/:id', (req, res) => {
+    db.run(`DELETE FROM icecekler WHERE id = ?`, req.params.id, function(err) {
+        if (err) {
+            res.status(400).json({ "error": res.message });
+            return;
+        }
+        res.json({ message: "deleted", changes: this.changes });
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Backend sunucusu ${PORT} portunda çalışıyor.`);
 });
+
+
