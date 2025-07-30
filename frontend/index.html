@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Soda Counter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🥤 Soda Counter</h1>
+        <div class="form-container">
+            <h2>Yeni Ceza Ekle</h2>
+            <form id="cezaFormu">
+                <select id="kisi" required><option value="">Kişi Seçin...</option><option value="Müdür">Müdür</option><option value="Ahmet Yılmaz">Ahmet Yılmaz</option><option value="Ayşe Kaya">Ayşe Kaya</option></select>
+                <select id="icecek" required><option value="">İçecek Seçin...</option><option value="Kola">Kola</option><option value="Sprite">Sprite</option><option value="Soda">Soda</option></select>
+                <button type="submit">Ekle</button>
+            </form>
+        </div>
+        <div class="liste-container">
+            <h2>Ödenmemişler Listesi</h2>
+            <div id="cezaListesi">Yükleniyor...</div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
