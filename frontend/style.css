@@ -1,86 +1,7 @@
-/* Google Fonts */
-:root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --background-color: #ecf0f1;
-    --card-background: #ffffff;
-    --text-color: #34495e;
-    --success-color: #2ecc71;
-    --danger-color: #e74c3c;
-    --font-family: 'Poppins', sans-serif;
-}
+/* style.css içindeki değişiklikler ve eklemeler */
 
-body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-}
-
-.container {
-    width: 100%;
-    max-width: 700px;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-header h1 {
-    color: var(--primary-color);
-    font-size: 2.5em;
-    margin: 0;
-}
-
-header p {
-    color: #7f8c8d;
-    font-size: 1.1em;
-}
-
-.card {
-    background: var(--card-background);
-    padding: 25px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-h2 {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 10px;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-select {
-    flex-grow: 1;
-    padding: 12px;
-    border: 1px solid #bdc3c7;
-    border-radius: 8px;
-    font-size: 1em;
-    font-family: var(--font-family);
-    background-color: #fff;
-}
-
-.add-btn {
+/* .add-btn sınıfını .manage-btn olarak değiştirin */
+.manage-btn {
     padding: 0 15px;
     font-size: 1.2em;
     border: none;
@@ -91,29 +12,12 @@ select {
     transition: background-color 0.2s;
 }
 
-.add-btn:hover {
+.manage-btn:hover {
     background-color: #2980b9;
 }
 
-.submit-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2em;
-    font-weight: 600;
-    border: none;
-    background: linear-gradient(45deg, var(--success-color), #27ae60);
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-}
-
-.borclu-item {
+/* .borclu-item'ı .ceza-item olarak değiştirip güncelleyin */
+.ceza-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -121,38 +25,27 @@ select {
     border-bottom: 1px solid #ecf0f1;
     transition: background-color 0.2s;
 }
+.ceza-item:last-child { border-bottom: none; }
+.ceza-item:hover { background-color: #f9f9f9; }
 
-.borclu-item:last-child {
-    border-bottom: none;
+.ceza-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.borclu-item:hover {
-    background-color: #f9f9f9;
-}
-
-.borclu-info strong {
-    font-size: 1.2em;
+.ceza-info strong {
+    font-size: 1.1em;
     color: var(--primary-color);
 }
 
-.borclu-info .borclar {
-    margin-left: 10px;
+.ceza-info span {
     font-size: 0.9em;
     color: #7f8c8d;
 }
 
-.borc {
-    background-color: var(--danger-color);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 12px;
-    margin: 0 5px;
-    font-size: 0.8em;
-    display: inline-block;
-}
-
-.ode-btn {
+.ode-btn { /* Bu zaten vardı, belki biraz küçültebiliriz */
     padding: 8px 12px;
+    font-size: 0.9em;
     border: none;
     background-color: var(--danger-color);
     color: white;
@@ -160,76 +53,61 @@ select {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+.ode-btn:hover { background-color: #c0392b; }
 
-.ode-btn:hover {
-    background-color: #c0392b;
+
+/* YENİ Modal Stilleri */
+.modal-body {
+    margin-top: 20px;
 }
-
-/* Modal Stilleri */
-.modal-container {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    animation: fadeIn 0.3s;
+.add-section, .list-section {
+    margin-bottom: 20px;
 }
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
 }
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    animation: slideIn 0.3s;
-}
-
-@keyframes slideIn {
-    from {transform: translateY(-50px); opacity: 0;}
-    to {transform: translateY(0); opacity: 1;}
-}
-
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-}
-
-#modalForm {
+#modalAddForm {
     display: flex;
     gap: 10px;
 }
-
 #modalInput {
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
-#modalSubmitBtn {
+#modalAddForm button {
     padding: 10px 20px;
     border: none;
     background-color: var(--success-color);
     color: white;
     border-radius: 8px;
     cursor: pointer;
+}
+#modalList {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+#modalList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+}
+#modalList li:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.delete-item-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 1.1em;
 }
