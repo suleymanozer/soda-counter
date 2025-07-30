@@ -80,7 +80,7 @@ select {
 }
 
 .manage-btn {
-    flex-shrink: 0; /* Küçülmesini engelle */
+    flex-shrink: 0;
     padding: 0 15px;
     font-size: 1.2em;
     border: none;
@@ -117,45 +117,89 @@ select {
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 
-/* Ceza Listesi Stilleri */
-.ceza-item {
+/* Borçlu Grubu ve Detay Stilleri */
+.borclu-grup {
+    margin-bottom: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.borclu-baslik {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.borclu-baslik i {
+    margin-right: 10px;
+}
+
+.ceza-detay {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 12px 15px;
     border-bottom: 1px solid #ecf0f1;
+    background-color: var(--card-background);
 }
-.ceza-item:last-child { 
-    border-bottom: none; 
-}
-
-.ceza-info {
-    display: flex;
-    flex-direction: column;
+.ceza-detay:last-child {
+    border-bottom: none;
 }
 
-.ceza-info strong {
+.ceza-detay-ad {
+    font-weight: 600;
     font-size: 1.1em;
     color: var(--primary-color);
 }
 
-.ceza-info span {
-    font-size: 0.9em;
-    color: #7f8c8d;
+/* Sayaç Grubu Stilleri */
+.sayac-grup {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.ode-btn {
-    padding: 8px 12px;
-    font-size: 0.9em;
-    border: none;
-    background-color: var(--danger-color);
-    color: white;
-    border-radius: 8px;
+.sayac-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    color: var(--text-color);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Yuvarlak butonlar */
+    font-size: 1.2em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.1s;
 }
-.ode-btn:hover {
-    background-color: #c0392b;
+.sayac-btn:hover {
+    background-color: #e0e0e0;
+}
+.sayac-btn:active {
+    transform: scale(0.95);
+}
+
+.sayac-btn.sayac-arttir {
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+.sayac-btn.sayac-azalt {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.borc-sayac {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--primary-color);
+    min-width: 30px;
+    text-align: center;
 }
 
 /* Modal (Açılır Pencere) Stilleri */
@@ -269,7 +313,6 @@ select {
 .delete-item-btn:hover {
     color: #c0392b;
 }
-
 
 /* Animasyonlar */
 @keyframes fadeIn {
