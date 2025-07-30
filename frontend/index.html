@@ -2,48 +2,53 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Soda Counter - Dinamik</title>
+    <title>🥤 Soda Counter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>🥤 Soda Counter</h1>
+        <header>
+            <h1>🥤 Soda Counter</h1>
+            <p>Ofisin neşe kaynağı (ve borç tablosu)!</p>
+        </header>
         
-        <!-- Ceza Ekleme Formu -->
-        <div class="form-container card">
+        <div class="card" id="ceza-ekle-karti">
             <h2>Yeni Ceza Ekle</h2>
             <form id="cezaFormu">
-                <select id="kisi" required>
-                    <option value="">Kişi Yükleniyor...</option>
-                </select>
-                <select id="icecek" required>
-                    <option value="">İçecek Yükleniyor...</option>
-                </select>
-                <button type="submit">Cezayı Ekle</button>
+                <div class="form-group">
+                    <select id="kisi" required></select>
+                    <button type="button" class="add-btn" id="yeniKisiBtn"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="form-group">
+                    <select id="icecek" required></select>
+                    <button type="button" class="add-btn" id="yeniIcecekBtn"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <button type="submit" class="submit-btn">Cezayı Kes! <i class="fa-solid fa-bolt"></i></button>
             </form>
         </div>
 
-        <!-- Ceza Listesi -->
-        <div class="liste-container card">
-            <h2>Ödenmemişler Listesi</h2>
+        <div class="card">
+            <h2>Borçlular Panosu</h2>
             <div id="cezaListesi">Yükleniyor...</div>
         </div>
+    </div>
 
-        <!-- Yönetim Paneli (YENİ) -->
-        <div class="yonetim-paneli card">
-            <h2>Yönetim Paneli</h2>
-            <div class="yonetim-formlari">
-                <form id="kisiEkleFormu">
-                    <input type="text" id="yeniKisiAdi" placeholder="Yeni Kişi Adı" required>
-                    <button type="submit">Kişi Ekle</button>
-                </form>
-                <form id="icecekEkleFormu">
-                    <input type="text" id="yeniIcecekAdi" placeholder="Yeni İçecek Adı" required>
-                    <button type="submit">İçecek Ekle</button>
-                </form>
-            </div>
+    <!-- Modal (Açılır Pencere) Yapısı -->
+    <div id="modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h3 id="modalTitle"></h3>
+            <form id="modalForm">
+                <input type="text" id="modalInput" required>
+                <button type="submit" id="modalSubmitBtn">Ekle</button>
+            </form>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
