@@ -2,7 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>🥤 Soda Counter v3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🥤 Soda Counter - Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -10,37 +11,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
+    <div class="dashboard-layout">
+        <header class="dashboard-header">
             <h1>🥤 Soda Counter</h1>
             <p>Ofisin neşe kaynağı (ve borç tablosu)!</p>
         </header>
-        
-        <div class="card" id="ceza-ekle-karti">
-            <h2>Yeni Ceza Ekle</h2>
-            <form id="cezaFormu">
-                <div class="form-group">
-                    <select id="kisi" required></select>
-                    <button type="button" class="manage-btn" id="yonetimKisiBtn"><i class="fa-solid fa-gear"></i></button>
-                </div>
-                <div class="form-group">
-                    <select id="icecek" required></select>
-                    <button type="button" class="manage-btn" id="yonetimIcecekBtn"><i class="fa-solid fa-gear"></i></button>
-                </div>
-                <button type="submit" class="submit-btn">Cezayı Kes! <i class="fa-solid fa-bolt"></i></button>
-            </form>
-        </div>
 
-        <div class="card">
-            <h2>Ödenmemiş Cezalar</h2>
-            <div id="cezaListesi">Yükleniyor...</div>
+        <div class="dashboard-container">
+            <!-- ANA SÜTUN (GENİŞ) -->
+            <main class="main-column">
+                <div class="card">
+                    <h2>Ödenmemiş Cezalar</h2>
+                    <div id="cezaListesi">Yükleniyor...</div>
+                </div>
+            </main>
+
+            <!-- YAN SÜTUN (DAR) -->
+            <aside class="sidebar-column">
+                <div class="card" id="ceza-ekle-karti">
+                    <h2>Yeni Ceza Ekle</h2>
+                    <form id="cezaFormu">
+                        <div class="form-group">
+                            <select id="kisi" required></select>
+                            <button type="button" class="manage-btn" id="yonetimKisiBtn"><i class="fa-solid fa-gear"></i></button>
+                        </div>
+                        <div class="form-group">
+                            <select id="icecek" required></select>
+                            <button type="button" class="manage-btn" id="yonetimIcecekBtn"><i class="fa-solid fa-gear"></i></button>
+                        </div>
+                        <button type="submit" class="submit-btn">Cezayı Kes! <i class="fa-solid fa-bolt"></i></button>
+                    </form>
+                </div>
+                <!-- Gelecekte istatistik kartı buraya gelebilir -->
+            </aside>
         </div>
     </div>
 
-    <!-- Yönetim Modalı (Açılır Pencere) -->
+    <!-- Modal (Açılır Pencere) Yapısı -->
     <div id="modal" class="modal-container">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <span class="close-btn">&times;</span>
             <h3 id="modalTitle"></h3>
             <div class="modal-body">
                 <div class="add-section">
