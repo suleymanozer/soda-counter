@@ -13,14 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalList = document.getElementById('modalList');
     const closeModalBtn = document.querySelector('.close-btn');
 
-    let currentManagementType = null; // 'kisi' or 'icecek'
+    let currentManagementType = null;
 
     // --- API HELPER FUNCTIONS ---
     async function fetchData(endpoint) {
         const response = await fetch(`${apiUrl}/${endpoint}`);
         return response.json();
     }
-
     async function postData(endpoint, body) {
         await fetch(`${apiUrl}/${endpoint}`, {
             method: 'POST',
@@ -28,11 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify(body),
         });
     }
-    
     async function deleteData(endpoint, id) {
         await fetch(`${apiUrl}/${endpoint}/${id}`, { method: 'DELETE' });
     }
-
     async function updateData(endpoint) {
         await fetch(`${apiUrl}/${endpoint}`, { method: 'PUT' });
     }
@@ -59,36 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const borclular = cezalar.reduce((acc, ceza) => {
             acc[ceza.kisi] = acc[ceza.kisi] || {};
             acc[ceza.kisi][ceza.icecek] = acc[ceza.kisi][ceza.icecek] || { count: 0, ids: [] };
-            
             acc[ceza.kisi][ceza.icecek].count++;
             acc[ceza.kisi][ceza.icecek].ids.push(ceza.id);
             acc[ceza.kisi][ceza.icecek].ids.sort((a, b) => a - b);
-
             return acc;
         }, {});
 
-        // Kişileri alfabetik olarak sırala
         const siraliKisiler = Object.keys(borclular).sort((a, b) => a.localeCompare(b, 'tr'));
 
         for (const kisi of siraliKisiler) {
             const grupElementi = document.createElement('div');
             grupElementi.className = 'borclu-grup';
-
             const baslikElementi = document.createElement('div');
             baslikElementi.className = 'borclu-baslik';
             baslikElementi.innerHTML = `<i class="fa-solid fa-user"></i> ${kisi}`;
             grupElementi.appendChild(baslikElementi);
-            
             const kisiBorclari = borclular[kisi];
-            
-            // O kişiye ait içecekleri alfabetik olarak sırala
             const siraliIcecekler = Object.keys(kisiBorclari).sort((a, b) => a.localeCompare(b, 'tr'));
             
             for (const icecek of siraliIcecekler) {
                 const borc = kisiBorclari[icecek];
                 const cezaDetayElementi = document.createElement('div');
                 cezaDetayElementi.className = 'ceza-detay';
-                
                 cezaDetayElementi.innerHTML = `
                     <span class="ceza-detay-ad">${icecek}</span>
                     <div class="sayac-grup">
@@ -109,17 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const isKisi = type === 'kisi';
         modalTitle.textContent = isKisi ? 'Kişileri Yönet' : 'İçecekleri Yönet';
         modalInput.placeholder = isKisi ? 'Yeni Kişi Adı' : 'Yeni İçecek Adı';
-
         const endpoint = isKisi ? 'kisiler' : 'icecekler';
         const { data: items } = await fetchData(endpoint);
-        
         modalList.innerHTML = '';
         if (items.length === 0) {
             modalList.innerHTML = '<li>Liste boş.</li>';
         } else {
-            // Modal içindeki listeyi de alfabetik sıralayalım
             const sortedItems = items.sort((a, b) => (isKisi ? a.ad_soyad : a.ad).localeCompare(isKisi ? b.ad_soyad : b.ad, 'tr'));
-
             sortedItems.forEach(item => {
                 const li = document.createElement('li');
                 li.textContent = isKisi ? item.ad_soyad : item.ad;
@@ -131,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalList.appendChild(li);
             });
         }
-        
         modal.style.display = 'flex';
     }
     
@@ -142,11 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleDeleteItem(id) {
         if (!confirm('Bu öğeyi silmek istediğinizden emin misiniz?')) return;
-        
         const isKisi = currentManagementType === 'kisi';
         const endpoint = isKisi ? 'kisiler' : 'icecekler';
         await deleteData(endpoint, id);
-        
         await openModal(currentManagementType);
         await initDropdowns();
     }
@@ -162,14 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modalAddForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const value = modalInput.value.trim();
-        if (!value) return; // Boş girişleri engelle
-
+        if (!value) return;
         const isKisi = currentManagementType === 'kisi';
         const endpoint = isKisi ? 'kisiler' : 'icecekler';
         const body = isKisi ? { ad_soyad: value } : { ad: value };
-        
         await postData(endpoint, body);
-        
         modalInput.value = '';
         await openModal(currentManagementType);
         await initDropdowns();
@@ -185,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cezaListesi.addEventListener('click', async (e) => {
         const azaltBtn = e.target.closest('.sayac-azalt');
         const arttirBtn = e.target.closest('.sayac-arttir');
-
         if (azaltBtn) {
             const ids = JSON.parse(azaltBtn.dataset.ids);
             if (ids.length > 0) {
@@ -194,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 await renderCezalar();
             }
         }
-
         if (arttirBtn) {
             const kisi = arttirBtn.dataset.kisi;
             const icecek = arttirBtn.dataset.icecek;
@@ -206,11 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIALIZATION ---
     async function initDropdowns() {
         const [{ data: kisiler }, { data: icecekler }] = await Promise.all([fetchData('kisiler'), fetchData('icecekler')]);
-        
-        // Dropdown menüleri de alfabetik sıralayalım
         const sortedKisiler = kisiler.sort((a,b) => a.ad_soyad.localeCompare(b.ad_soyad, 'tr'));
         const sortedIcecekler = icecekler.sort((a,b) => a.ad.localeCompare(b.ad, 'tr'));
-
         populateSelect(kisiSelect, sortedKisiler, 'ad_soyad', 'ad_soyad');
         populateSelect(icecekSelect, sortedIcecekler, 'ad', 'ad');
     }
