@@ -2,7 +2,7 @@
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
-    --background-color: #ecf0f1;
+    --background-color: #f4f7f6; /* Biraz daha yumuşak bir arka plan */
     --card-background: #ffffff;
     --text-color: #34495e;
     --success-color: #2ecc71;
@@ -16,41 +16,63 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
 }
 
-.container {
+/* YENİ: Dashboard Yerleşim Stilleri */
+.dashboard-layout {
     width: 100%;
-    max-width: 700px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    box-sizing: border-box;
 }
 
-header {
+.dashboard-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-header h1 {
+.dashboard-header h1 {
     color: var(--primary-color);
     font-size: 2.5em;
     margin: 0;
 }
 
-header p {
+.dashboard-header p {
     color: #7f8c8d;
     font-size: 1.1em;
+}
+
+.dashboard-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.main-column {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sidebar-column {
+    flex: 1;
+    position: sticky;
+    top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 /* Kart Yapısı */
 .card {
     background: var(--card-background);
     padding: 25px;
-    margin-bottom: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 h2 {
@@ -125,6 +147,9 @@ select {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
+.borclu-grup:last-child {
+    margin-bottom: 0;
+}
 
 .borclu-baslik {
     background-color: var(--primary-color);
@@ -156,7 +181,6 @@ select {
     color: var(--primary-color);
 }
 
-/* Sayaç Grubu Stilleri */
 .sayac-grup {
     display: flex;
     align-items: center;
@@ -169,7 +193,7 @@ select {
     color: var(--text-color);
     width: 35px;
     height: 35px;
-    border-radius: 50%; /* Yuvarlak butonlar */
+    border-radius: 50%;
     font-size: 1.2em;
     font-weight: 600;
     cursor: pointer;
@@ -184,7 +208,6 @@ select {
 .sayac-btn:active {
     transform: scale(0.95);
 }
-
 .sayac-btn.sayac-arttir {
     color: var(--success-color);
     border-color: var(--success-color);
@@ -202,7 +225,7 @@ select {
     text-align: center;
 }
 
-/* Modal (Açılır Pencere) Stilleri */
+/* Modal Stilleri */
 .modal-container {
     display: none;
     position: fixed;
@@ -216,7 +239,6 @@ select {
     justify-content: center;
     align-items: center;
 }
-
 .modal-content {
     background-color: #fefefe;
     padding: 25px;
@@ -227,7 +249,6 @@ select {
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     animation: slideIn 0.3s;
 }
-
 .close-btn {
     color: #aaa;
     position: absolute;
@@ -237,20 +258,16 @@ select {
     font-weight: bold;
     cursor: pointer;
 }
-
 .close-btn:hover,
 .close-btn:focus {
     color: black;
 }
-
 .modal-body {
     margin-top: 10px;
 }
-
 .add-section, .list-section {
     margin-bottom: 20px;
 }
-
 .add-section h4, .list-section h4 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -258,19 +275,16 @@ select {
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
 }
-
 #modalAddForm {
     display: flex;
     gap: 10px;
 }
-
 #modalInput {
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
-
 #modalAddForm button {
     padding: 10px 20px;
     border: none;
@@ -279,7 +293,6 @@ select {
     border-radius: 8px;
     cursor: pointer;
 }
-
 #modalList {
     list-style: none;
     padding: 0;
@@ -289,7 +302,6 @@ select {
     border: 1px solid #eee;
     border-radius: 8px;
 }
-
 #modalList li {
     display: flex;
     justify-content: space-between;
@@ -300,7 +312,6 @@ select {
 #modalList li:last-child {
     border-bottom: none;
 }
-
 .delete-item-btn {
     background: none;
     border: none;
@@ -309,7 +320,6 @@ select {
     font-size: 1.1em;
     transition: color 0.2s;
 }
-
 .delete-item-btn:hover {
     color: #c0392b;
 }
@@ -319,8 +329,21 @@ select {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-
 @keyframes slideIn {
     from { transform: translateY(-50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+/* MOBİL UYUMLULUK */
+@media (max-width: 900px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar-column {
+        position: static;
+        width: 100%;
+    }
+    .dashboard-layout {
+        padding: 15px;
+    }
 }
