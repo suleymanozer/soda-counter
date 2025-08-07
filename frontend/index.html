@@ -14,14 +14,13 @@
     <div class="dashboard-layout">
         <header class="dashboard-header">
             <h1>🥤 Soda Counter</h1>
-            <p>Ofisin neşe kaynağı (ve borç tablosu)!</p>
         </header>
 
         <div class="dashboard-container">
             <!-- ANA SÜTUN (GENİŞ) -->
             <main class="main-column">
                 <div class="card">
-                    <h2>Ödenmemiş Cezalar</h2>
+                    <h2>Ödenmemiş Katkı Payları</h2>
                     <div id="cezaListesi">Yükleniyor...</div>
                 </div>
             </main>
@@ -29,7 +28,7 @@
             <!-- YAN SÜTUN (DAR) -->
             <aside class="sidebar-column">
                 <div class="card" id="ceza-ekle-karti">
-                    <h2>Yeni Ceza Ekle</h2>
+                    <h2>Yeni Katkı Payı Ekle</h2>
                     <form id="cezaFormu">
                         <div class="form-group">
                             <select id="kisi" required></select>
@@ -39,7 +38,7 @@
                             <select id="icecek" required></select>
                             <button type="button" class="manage-btn" id="yonetimIcecekBtn"><i class="fa-solid fa-gear"></i></button>
                         </div>
-                        <button type="submit" class="submit-btn">Cezayı Kes! <i class="fa-solid fa-bolt"></i></button>
+                        <button type="submit" class="submit-btn">Katkı Payı Ekle! <i class="fa-solid fa-bolt"></i></button>
                     </form>
                 </div>
                 <!-- Gelecekte istatistik kartı buraya gelebilir -->
@@ -71,3 +70,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
