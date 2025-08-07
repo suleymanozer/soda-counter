@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- RENDER FUNCTIONS ---
     function populateSelect(selectElement, items, valueKey, textKey) {
-        selectElement.innerHTML = `<option value="">${selectElement.id === 'kisi' ? 'Kişi' : 'İçecek'} Seçin...</option>`;
+        selectElement.innerHTML = `<option value="">${selectElement.id === 'kisi' ? 'Kişi' : 'Katkı Payı'} Seçin...</option>`;
         items.forEach(item => {
             const option = document.createElement('option');
             option.value = item[valueKey];
@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function openModal(type) {
         currentManagementType = type;
         const isKisi = type === 'kisi';
-        modalTitle.textContent = isKisi ? 'Kişileri Yönet' : 'İçecekleri Yönet';
-        modalInput.placeholder = isKisi ? 'Yeni Kişi Adı' : 'Yeni İçecek Adı';
+        modalTitle.textContent = isKisi ? 'Kişileri Yönet' : 'Katkı Paylarını Yönet';
+        modalInput.placeholder = isKisi ? 'Yeni Kişi Adı' : 'Yeni Katkı Payı Adı';
         const endpoint = isKisi ? 'kisiler' : 'icecekler';
         const { data: items } = await fetchData(endpoint);
         modalList.innerHTML = '';
@@ -196,3 +196,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
+
