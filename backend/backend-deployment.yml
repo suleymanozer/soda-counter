@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soda-counter-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soda-counter-backend
+  template:
+    metadata:
+      labels:
+        app: soda-counter-backend
+    spec:
+      containers:
+        - name: backend
+          image: your-registry/soda-counter/backend:1.0 # İmajının adresi
+          ports:
+            - containerPort: 3001
+          volumeMounts: # Pod içindeki yolu PVC'ye bağla
+            - name: db-storage
+              mountPath: /app/database
+      volumes: # Hangi PVC'yi kullanacağını belirt
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: soda-counter-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: soda-counter-backend # Frontend bu isimle backend'e ulaşacak
+spec:
+  selector:
+    app: soda-counter-backend
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
