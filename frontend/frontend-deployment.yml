@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soda-counter-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soda-counter-frontend
+  template:
+    metadata:
+      labels:
+        app: soda-counter-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: your-registry/soda-counter/frontend:1.0 # İmajının adresi
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: soda-counter-frontend
+spec:
+  selector:
+    app: soda-counter-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: soda-counter-route
+spec:
+  to:
+    kind: Service
+    name: soda-counter-frontend
+  port:
+    targetPort: 80
