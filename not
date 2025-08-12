@@ -1,3 +1,13 @@
+# Rancher'ın repo'sunu ekle
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+
+# Cert-manager'ın repo'sunu da ekleyelim, ne olur ne olmaz
+helm repo add jetstack https://charts.jetstack.io
+
+# Repo listesini güncelle
+helm repo update
+
+
 Ah, son düzlükte karşımıza çıkan bu hata, aslında çözümü en kolay olanlardan biri! Bu, "zor yol" kurulumlarının ne kadar güncel olduğunu gösteren tatlı bir sorun.
 
 **Hatanın Açıklaması:**
