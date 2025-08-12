@@ -1,0 +1,134 @@
+Elbette, haklısın. Formatlamada yine bir sorun olmuş.
+
+İşte son denememiz olan **"Flannel ile Son Şans"** eylem planının, her adımı net, kopyalanabilir ve doğru formatta yazılmış hali. Bu, Calico'yu tamamen devreden çıkarıp, daha basit bir CNI olan Flannel ile şansımızı denemek için eksiksiz bir rehberdir.
+
+---
+
+### **"FLANNEL İLE SON ŞANS" EYLEM PLANI (TAM VE DÜZELTİLMİŞ VERSİYON)**
+
+---
+
+#### **BÖLÜM 1: TAM TEMİZLİK**
+
+Önce Calico'dan ve önceki denemelerden kalan her şeyi yok ediyoruz.
+
+1.  **`jumpbox` Üzerinde:**
+    ```bash
+    helm uninstall cert-manager --namespace cert-manager
+    kubectl delete namespace cert-manager
+    # calico.yaml dosyasının olduğu dizinde
+    kubectl delete -f calico.yaml
+    ```
+
+2.  **`node-0` ve `node-1` Üzerinde:**
+    *Bu komutları hem `node-0`'da hem de `node-1`'de çalıştır.*
+    ```bash
+    sudo rm -f /etc/cni/net.d/*
+    sudo rm -rf /var/lib/calico/
+    sudo systemctl restart containerd
+    sudo systemctl restart kubelet
+    ```
+
+3.  **`server` Üzerinde:**
+    *Bu komutu `server` makinesinde çalıştır.*
+    ```bash
+    sudo ip route del 10.200.0.0/24 || true
+    sudo ip route del 10.200.1.0/24 || true
+    sudo systemctl restart kube-apiserver kube-controller-manager
+    ```
+
+---
+
+#### **BÖLÜM 2: FLANNEL İÇİN HAZIRLIK**
+
+Şimdi internetli bir ortamda Flannel için gerekli dosyaları hazırlayacağız.
+
+1.  **Hazırlık (İnternetli Makine - PWD veya Lokal Bilgisayar):**
+    ```bash
+    # Çalışma dizini oluşturalım
+    mkdir -p ~/flannel-prep
+    cd ~/flannel-prep
+
+    # 1. Flannel'ın kurulum YAML dosyasını indirelim
+    wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+    # 2. Flannel'ın kullandığı imajları indirelim
+    # Not: Bu versiyonlar yml dosyasından kontrol edilmiştir, doğrudur.
+    docker pull flannel/flannel-cni-plugin:v1.4.1-flannel1
+    docker pull flannel/flannel:v0.25.1
+
+    # 3. İmajları .tar olarak paketleyelim
+    docker save -o flannel-cni.tar flannel/flannel-cni-plugin:v1.4.1-flannel1
+    docker save -o flanneld.tar flannel/flannel:v0.25.1
+    ```
+
+2.  **Dosyaları `jumpbox`'a Taşı:**
+    *Bu komutu kendi lokal bilgisayarından çalıştır.*
+    ```bash
+    scp ~/flannel-prep/* root@10.57.148.150:~/
+    ```
+
+---
+
+#### **BÖLÜM 3: FLANNEL KURULUMU**
+
+1.  **İmajları Dağıt ve Yükle:**
+    *   **`jumpbox` Üzerinde:**
+        ```bash
+        scp ~/flannel-cni.tar root@10.57.148.153:~/
+        scp ~/flannel-cni.tar root@10.57.148.160:~/
+        scp ~/flanneld.tar root@10.57.148.153:~/
+        scp ~/flanneld.tar root@10.57.148.160:~/
+        ```
+    *   **`node-0` ve `node-1` Üzerinde:**
+        *`node-0`'a bağlan ve çalıştır:*
+        ```bash
+        sudo ctr -n k8s.io image import ~/flannel-cni.tar
+        sudo ctr -n k8s.io image import ~/flanneld.tar
+        ```
+        *`node-1`'e bağlan ve aynı iki komutu çalıştır.*
+
+2.  **Flannel Manifestosunu Düzenle (KRİTİK ADIM):**
+    *`jumpbox` üzerinde:*
+    ```bash
+    # kube-flannel.yml dosyasını aç
+    nano kube-flannel.yml
+    ```
+    *   Dosyanın içinde `net-conf.json` adlı bir `ConfigMap` bölümü bul. Oradaki `"Network"` satırının bizim cluster CIDR'ımız olan **`"10.200.0.0/16"`** olduğundan emin ol. Değilse, bu değerle düzelt.
+    *   Dosyadaki `imagePullPolicy: Always` yazan iki yeri bul ve `imagePullPolicy: IfNotPresent` olarak değiştir.
+
+3.  **Flannel'ı Kur:**
+    *`jumpbox` üzerinde:*
+    ```bash
+    kubectl apply -f kube-flannel.yml
+    ```
+
+4.  **Doğrulama:**
+    ```bash
+    # Flannel pod'larının Running olmasını bekle
+    echo "Flannel pod'larının başlaması bekleniyor..."
+    kubectl wait --for=condition=Ready pod -l app=flannel -n kube-system --timeout=5m
+    echo "Flannel pod'ları hazır."
+
+    # Node'ların Ready olmasını bekle
+    kubectl get nodes
+    ```
+    İki node'un da `Ready` olduğundan emin ol.
+
+---
+
+#### **BÖLÜM 4: `cert-manager` FİNAL TESTİ**
+
+Eğer Flannel başarıyla kurulduysa ve node'lar `Ready` ise, bu son adımdır.
+
+*`jumpbox` üzerinde:*
+```bash
+cd ~/helm-charts
+helm install cert-manager ./cert-manager-v1.14.4.tgz \
+  --namespace cert-manager --create-namespace \
+  --set installCRDs=true \
+  --set imagePullPolicy=IfNotPresent \
+  --wait --timeout 10m
+```
+
+Bu, sorunu çözmek için atabileceğimiz son mantıklı adımdır. Eğer bu da `timed out` hatası verirse, sorun büyük olasılıkla sanal makineleri barındıran altyapının ağ katmanında veya işletim sisteminin kendisindedir.
